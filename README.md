@@ -74,3 +74,21 @@ On part du principe que le premier élément 5 est trié. Donc la partie a gauch
 
 - **Résultat final** : `[2, 3, 4, 5, 8]`
 
+# Insertion sort — version basique (in-place, stable)
+      def insertion_sort(arr):
+        n = len(arr)
+        for current in range(1, n):
+          current_card = arr[current]
+          correct_position = current - 1  # ira de i-1 à 0
+
+          # Décale les éléments plus grands vers la droite
+          while correct_position >= 0 and arr[correct_position] > current_card:
+              arr[correct_position + 1] = arr[correct_position]
+              correct_position -= 1
+
+        # Insère la clé à la position libérée
+        arr[correct_position + 1] = current_card
+
+    return arr
+
+
