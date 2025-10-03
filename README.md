@@ -104,7 +104,7 @@ On part du principe que le premier élément 5 est trié. Donc la partie a gauch
 ### Shell Sort
 - [Présentation](#shell-sort--presentation)
 Shell sort est un algorithme de tri en place qui généralise l’insertion sort :
-il trie d’abord des sous-suites d’éléments espacés d’un gap, puis réduit gap progressivement jusqu’à 1.
+- il trie d’abord des sous-suites d’éléments espacés d’un gap, puis réduit gap progressivement jusqu’à 1.
 
 Ce procédé permet aux petits éléments d’avancer rapidement vers leur zone cible, rendant le dernier passage (insertion classique à gap=1) beaucoup plus efficace.
 ---
