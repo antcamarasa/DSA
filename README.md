@@ -103,3 +103,80 @@ On part du principe que le premier élément 5 est trié. Donc la partie a gauch
 ## Advanced Sorting
 ### Shell Sort
 - [Présentation](#shell-sort--presentation)
+Shell sort est un algorithme de tri en place qui généralise l’insertion sort :
+il trie d’abord des sous-suites d’éléments espacés d’un gap, puis réduit gap progressivement jusqu’à 1.
+
+Ce procédé permet aux petits éléments d’avancer rapidement vers leur zone cible, rendant le dernier passage (insertion classique à gap=1) beaucoup plus efficace.
+---
+
+Entrée : arr = [3, 6, 2, 8, 1]
+
+#### 1. Initialiser le gap
+  gap = len(arr) // 2 = 5 // 2 = 2.
+
+#### 2. Former les sous-suites (conceptuelles)
+On considère les éléments espacés de gap
+- Sous-suite A (indices 0,2,4) → valeurs 3, 2, 1
+- Sous-suite B (indices 1,3) → valeurs 6, 8
+
+Important : on ne crée pas de nouveaux tableaux. On travaille en place dans arr, aux positions i(Une liste d’index peut aider à comprendre, mais n’est pas nécessaire pour l’implémentation.)
+
+#### 3. Appliquer l’insertion gappée à chaque sous-suite
+- Sous-suite A 3, 2, 1 → tri par insertion (déplacements vers la droite, puis insertion de la “clé”) → 1, 2, 3
+  - arr devient : [1, 6, 2, 8, 3] (car on a modifié directement aux indices 0,2,4).
+- Sous-suite B 6, 8 → déjà triée
+  - arr reste : [1, 6, 2, 8, 3]
+
+#### 4. Réduire le gap
+  gap = gap // 2 = 1
+
+#### 5. Dernier passage (gap = 1)
+- Appliquer un insertion sort classique sur tout arr.
+- Résultat : [1, 2, 3, 6, 8].
+
+#### 6) Fin
+- Tableau trié.
+
+---
+
+### Basic Implementation
+    def insertion_sort_correction(arr):
+        n = len(arr)
+        for current in range(1, n):
+            current_card = arr[current]
+            correct_position = current - 1  # it will go form i-1 to 0
+
+            while correct_position >= 0:
+                if arr[correct_position] < current_card:
+                    break
+                else:
+                    arr[correct_position + 1] = arr[correct_position]
+                    correct_position -= 1
+                arr[correct_position + 1] = current_card
+        return arr
+
+
+    def shell_sort(arr, gap):
+      if gap <= 1:
+        return insertion_sort_correction(arr)
+      length = len(arr)
+
+      for x in range(0, gap):
+        current_idx = []
+        for y in range(x, length, gap):
+            current_idx.append(y)
+
+        #Implementation d'un insertion sort local
+        for i in range(1, len(current_idx)):
+            current_value = arr[current_idx[i]]
+            idx = i
+            for j in range(i, 0, -1):
+                tmp = arr[current_idx[j - 1]]
+                if current_value < tmp:
+                    arr[current_idx[j]] = arr[current_idx[j - 1]]
+                    idx -=1
+                else:
+                    break
+            arr[current_idx[idx]] = current_value
+
+    return shell_sort(arr, gap // 2)
