@@ -1,6 +1,5 @@
 # Data Structures and Algorithms
 
-## Sommaire
 - [Arrays & String](#arrays--string)
 - [Hashing](#hashing)
 - [Simple Sorting](#simple-sorting)
