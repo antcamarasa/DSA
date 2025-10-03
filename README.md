@@ -4,9 +4,17 @@
 - [Arrays & String](#arrays--string)
 - [Hashing](#hashing)
 - [Simple Sorting](#simple-sorting)
+  - [Bubble Sort](#bubble-sort)
+  - [Selection Sort](#selection-sort)   
   - [Insertion Sort](#insertion-sort)
-- [Recursion](#recursion)
+- [Recursion](#recursion) 
+- [Complex Sorting](#complex-sorting)
+  - [Heap Sort](#heap-sort)
+  - [Merge Sort](#merge-sort)
+  - [Quick Sort](#quick-sort)  
 - [Advanced Sorting](#advanced-sorting)
+  - [Shell Sort](#shell-sort) 
+  - [Radix Sort](#shell-sort)
 - [Stacks and Queues](#stacks-and-queues)
 - [Linked List](#linked-list)
 - [Binary Trees](#binary-trees)
@@ -16,7 +24,7 @@
 - [Graphs](#graphs)
 
 ---
-
+  
 ## Simple Sorting
 ### Insertion Sort
 **Sous-menu**
@@ -91,4 +99,8 @@ On part du principe que le premier élément 5 est trié. Donc la partie a gauch
 
     return arr
 
+---
 
+## Advanced Sorting
+### Shell Sort
+- [Présentation](#shell-sort--presentation)
