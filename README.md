@@ -107,6 +107,7 @@ Shell sort est un algorithme de tri en place qui généralise l’insertion sort
 - il trie d’abord des sous-suites d’éléments espacés d’un gap, puis réduit gap progressivement jusqu’à 1.
 
 Ce procédé permet aux petits éléments d’avancer rapidement vers leur zone cible, rendant le dernier passage (insertion classique à gap=1) beaucoup plus efficace.
+
 ---
 
 Entrée : arr = [3, 6, 2, 8, 1]
