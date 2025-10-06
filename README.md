@@ -390,6 +390,9 @@ Lorsqu’on fusionne deux tableaux triés, on les compare élément par élémen
 
 La récursion peut se faire sans problème : [low, p-1] et [p+1, high].  
 
+      Code : A implémenter
+--- 
+
 #### Version Partition Hoare(pivot = milieu ou autre)
 - On a deux pointeurs i et j :
   - i avance jusqu’à trouver un élément plus grand que le pivot.
@@ -402,6 +405,9 @@ La récursion peut se faire sans problème : [low, p-1] et [p+1, high].
 - tous ceux à droite de j sont ≥ pivot.
   -  Donc la récursion peut se faire sur [low, j] et [j+1, high] 
 
+         Code : A implémenter
+
+---
 
 ### Shell Sort
 - [Présentation](#shell-sort--presentation)
