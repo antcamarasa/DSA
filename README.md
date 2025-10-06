@@ -322,6 +322,64 @@ On part du principe que le premier élément 5 est trié. Donc la partie a gauch
 ---
 
 ## Advanced Sorting
+
+### Merge Sort
+Le merge sort (ou tri par fusion) est un algorithme de tri diviser pour régner (divide and conquer).
+Il est à la fois efficace (complexité en O(n log n)) et stable (il conserve l’ordre des éléments égaux).
+Voyons comment il fonctionne, étape par étape, sans aucun code.
+
+#### Le principe général
+Le merge sort repose sur trois grandes étapes :
+1. Diviser le tableau en deux moitiés jusqu’à obtenir des sous-tableaux de taille 1.
+   → Un tableau de taille 1 est déjà trié.
+2. Trier récursivement chaque moitié (en appliquant le même processus).
+3. Fusionner ces deux moitiés triées pour obtenir un tableau trié.
+
+#### Étape par étape sur un exemple
+Imaginons qu’on veuille trier ce tableau :
+
+      [8, 3, 5, 4, 7, 6, 1, 2]
+
+Etape 1 : Division
+
+On divise en deux moitiés : 
+- Gauche -> [8, 3, 5, 4]
+- Droite -> [7, 6, 1, 2]
+On continue à diviser récursivement chaque partie jusqu’à arriver à des sous-tableaux de taille 1 :
+- [8, 3, 5, 4] devient [8, 3] et [5, 4], puis [8], [3], [5], [4]
+- [7, 6, 1, 2] devient [7, 6] et [1, 2], puis [7], [6], [1], [2]
+
+À ce stade, on a :
+
+          [8] [3] [5] [4] [7] [6] [1] [2]
+
+Chaque bloc est trié individuellement (car un seul élément).
+
+Étape 2 : Fusion successive
+
+On commence maintenant à fusionner les petits tableaux deux à deux, en les triant lors de la fusion : 
+- Fusion de [8] et [3] → [3, 8]
+- Fusion de [5] et [4] → [4, 5]
+- Fusion de [7] et [6] → [6, 7]
+- Fusion de [1] et [2] → [1, 2]
+
+Puis on fusionne à nouveau :
+- [3, 8] et [4, 5] → [3, 4, 5, 8]
+- [6, 7] et [1, 2] → [1, 2, 6, 7]
+
+Enfin :
+- Fusion finale de [3, 4, 5, 8] et [1, 2, 6, 7] → [1, 2, 3, 4, 5, 6, 7, 8]
+
+⚙️ 3. Comment se fait la fusion exactement ?
+
+Lorsqu’on fusionne deux tableaux triés, on les compare élément par élément :
+- On prend le plus petit des deux premiers éléments et on le place dans un nouveau tableau.
+- On avance dans le tableau d’où provient l’élément choisi.
+- On répète jusqu’à ce qu’un des deux tableaux soit vide.
+- Puis on ajoute le reste du tableau non vide (puisqu’il est déjà trié).
+
+---
+
 ### Shell Sort
 - [Présentation](#shell-sort--presentation)
 Shell sort est un algorithme de tri en place qui généralise l’insertion sort :
@@ -358,6 +416,32 @@ Important : on ne crée pas de nouveaux tableaux. On travaille en place dans arr
 
 #### 6) Fin
 - Tableau trié.
+    
+      def merge_sort(arr):
+        if len(arr) <= 1:
+           return arr
+
+       middle = len(arr) // 2
+       left = merge_sort(arr[:middle])
+       right = merge_sort(arr[middle:])
+
+       new_arr = []
+       left_index = right_index = 0
+
+       while left_index < len(left) and right_index < len(right):
+        if left[left_index] <= right[right_index]:
+            new_arr.append(left[left_index])
+            left_index += 1
+        else:
+            new_arr.append(right[right_index])
+            right_index += 1
+
+      new_arr.extend(left[left_index:])
+      new_arr.extend(right[right_index:])
+
+      return new_arr
+
+
 
 ---
 
