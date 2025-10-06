@@ -184,6 +184,67 @@ l’accès à une clé est aussi O(1) en moyenne grâce à la table de hachage (
 - ⚙️ set ->
 identique à dict, il utilise une hash table, donc test d’appartenance et insertion en O(1).
 
+
+      >>> text[0]  # The first element
+      'A'
+
+      >>> text[len(text) // 2]  # The middle element
+      'A'
+
+      >>> text[-1]  # The last element, same as text[len(text) - 1]
+      'Z'
+
+Mais comment est-ce possible ?
+
+Le secret de cette grande rapidité réside dans le fait que les séquences(lst, tuple, str, array, range, bytes) Python reposent sur un tableau (array), une structure de données à accès aléatoire (random access).
+
+Random acces, ou accès aléatoires, ne siginifie pas "Accès au hasard" mais "Accès direct à n'importe quel élément sans parcourir les autres".
+
+Une structure à accès aléatoire (random access data structure) permet d’aller directement à un élément en connaissant son indice (position).
+
+Elle obéit à deux principes :
+- Le tableau occupe un bloc de mémoire contigu.
+- Chaque élément du tableau a une taille fixe connue à l’avance.
+
+Quand on connaît l’adresse mémoire du tableau (appelée offset), on peut accéder instantanément à n’importe quel élément en appliquant une formule simple :
+            
+            Adresse d’un élément = offset + (taille_élément × index)
+
+Autrement dit, on part de l’adresse du premier élément (index 0), puis on avance du nombre d’octets correspondant à la taille de l’élément multipliée par son index.
+
+Cette opération prend toujours le même temps, car elle se résume à une addition et une multiplication.
+
+🔎 Remarque : contrairement aux tableaux classiques, les listes Python peuvent contenir des éléments hétérogènes (de tailles différentes), ce qui casserait cette formule.
+Pour pallier cela, Python ajoute un niveau d’indirection : la liste contient un tableau de pointeurs vers les zones mémoire réelles où sont stockées les valeurs.
+
+#### Représentation d'une list en python : 
+
+          Array
+      ----------------------          0x7f -> "Hello
+        0x7f | 0xb5 | 0x7f
+      ----------------------
+Mon tableau stock des adresse mémoires et non des éléments, une des carractéristique d'une tableau dynamique.
+
+Les pointeurs ne sont en réalité que de simples nombres entiers, qui occupent toujours la même quantité d’espace mémoire. Par convention, les adresses mémoire sont représentées en notation hexadécimale. En Python (et dans d’autres langages), ces nombres sont préfixés par 0x.
+
+En résumé, trouver un élément dans un tableau est rapide; quelle que soit sa position en mémoire. Peut on réutiliser cette idée dans un dictionnaire ? -> Oui!
+
+Les tables de hachage tirent leur nom d’une astuce appelée hachage (hashing), qui permet de traduire une clé quelconque en un nombre entier, utilisable comme indice dans un tableau classique.
+
+Ainsi, au lieu de chercher une valeur via un index numérique, tu peux la retrouver à partir d’une clé arbitraire, sans perte notable de performance — malin, non ?
+
+En pratique, le hachage ne fonctionne pas avec toutes les clés, mais la plupart des types intégrés de Python sont hachables.
+
+Et si tu respectes certaines règles, tu pourras aussi créer tes propres types hachables.
+
+### Understand the Hash Function
+...
+
+
+
+
+----
+
 ## Simple Sorting
 ### Insertion Sort
 **Sous-menu**
