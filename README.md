@@ -380,6 +380,29 @@ Lorsqu’on fusionne deux tableaux triés, on les compare élément par élémen
 
 ---
 
+### Quick Sort
+#### Version Lomuto(pivot = fin)
+  - On avance un pointeur i au fur et à mesure qu’on rencontre des éléments plus petits que le pivot.
+  - On ne fait qu’une seule passe.
+  - À la fin, on échange pivot ↔ arr[i].
+  - Tout ce qui est avant i est plus petit, tout ce qui est après est plus grand.
+✅ Le pivot est à sa vraie place finale apres chacune des étapes.
+
+La récursion peut se faire sans problème : [low, p-1] et [p+1, high].  
+
+#### Version Partition Hoare(pivot = milieu ou autre)
+- On a deux pointeurs i et j :
+  - i avance jusqu’à trouver un élément plus grand que le pivot.
+  - j recule jusqu’à trouver un élément plus petit que le pivot.
+  - on échange ces deux éléments, puis on continue.
+    -  Quand i >= j, la partition est terminée. 
+
+✅ Le pivot n’est pas forcément à sa place finale, après chaque itération mais :
+- tous les éléments à gauche de j sont ≤ pivot,
+- tous ceux à droite de j sont ≥ pivot.
+  -  Donc la récursion peut se faire sur [low, j] et [j+1, high] 
+
+
 ### Shell Sort
 - [Présentation](#shell-sort--presentation)
 Shell sort est un algorithme de tri en place qui généralise l’insertion sort :
