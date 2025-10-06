@@ -98,8 +98,91 @@ Cependant, il existe une différence subtile :
 Pour la simpliciter de ce cours on utilisera python pour l'implémentation ainsi que le terme dictionnaire.
 
 ### Table de hachage vs Dictionnaire
-En informatique 
+En informatique, un dictionnaire est un type de donnée abstrait composé de paires : 
+- Clé / Valeur
 
+Il définit un ensemble d'opérations fondamentales : 
+- Ajouter une paire clé-valeur
+
+      d[key] = value
+  
+- Supprimer une paire clé-valeur
+
+      d.pop(key)
+  
+- Mettre a jour une paire clé-valeur
+
+      d.update({key: new_value})
+  
+- Trouver la valauer associé à une clé donnée
+
+      d[key]
+
+On peut le comparer à un dictionnaire bilingue, où les clés sont des mots étrangers et les valeurs leurs traductions.
+Mais la relation entre clé et valeur n’est pas toujours une traduction : par exemple, un annuaire téléphonique est aussi un dictionnaire, associant des noms à des numéros de téléphone.
+
+💡 À chaque fois que tu associes une chose à une autre (une valeur à une clé), tu utilises en réalité une forme de dictionnaire.
+C’est pourquoi on appelle aussi ces structures maps ou tableaux associatifs (associative arrays).
+
+
+#### Propriétés d’un dictionnaire
+Un dictionnaire possède plusieurs caractéristiques intéressantes :
+1. Paires clé–valeur uniquement → on ne peut pas avoir une clé sans valeur ni une valeur sans clé.
+2. Clés et valeurs arbitraires → elles peuvent appartenir à des types différents (nombres, String, tableaux, etc.).
+3. Paires non ordonnées → en général, les dictionnaires ne garantissent aucun ordre entre leurs éléments (cela dépend de l’implémentation).
+4. Clés uniques → une même clé ne peut pas apparaître deux fois (cela violerait la définition d’une fonction mathématique, et le fondement meme de la clé de hachage).
+5. Valeurs non uniques → une même valeur peut être associée à plusieurs clés.
+
+#### Concepts associés
+Certains concepts étendent le principe du dictionnaire :
+- Un multimap permet d’associer plusieurs valeurs à une même clé.
+- Un bidirectional map (ou map bidirectionnelle) associe les clés aux valeurs dans les deux sens.
+
+      >>> glossary = {"BDFL": "Benevolent Dictator For Life"}
+      >>> glossary["GIL"] = "Global Interpreter Lock"  # Add
+      >>> glossary["BDFL"] = "Guido van Rossum"  # Update
+      >>> del glossary["GIL"]  # Delete
+
+      >>> glossary["BDFL"]  # Search
+      'Guido van Rossum'
+
+      >>> glossary
+      {'BDFL': 'Guido van Rossum'}
+
+Avec la syntaxe des crochets [ ], tu peux ajouter, modifier ou supprimer une paire clé–valeur dans un dictionnaire, et accéder à la valeur d’une clé donnée.
+
+Mais une autre question se pose : comment fonctionne vraiment ce dictionnaire intégré ?, Comment peut-il gérer des clés de tout type et le faire si rapidement ?
+
+Chercher une implémentation efficace de ce type abstrait est ce qu’on appelle le “problème du dictionnaire”. L’une des solutions les plus connues repose sur la table de hachage, que l'on va voir ici, mais d’autres existent, comme celle basée sur un arbre rouge-noir (red-black tree).
+
+### Hash Table: Un Array avec une Hash Function
+T’es-tu déjà demandé pourquoi l’accès aux éléments d’une séquence en Python est si rapide, quel que soit l’indice demandé ?
+
+Par exemple, imagine que l'on travaille avec une très longue chaîne de caractères, comme celle-ci :
+         
+          >>>> import String
+          >>>> text = string.ascii_uppercase * 100_000_000
+          
+          >>>> text[:50] # slice de l'indice 0 à 50, montre que les 50 premier charcatères
+          'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWX'
+
+          >>>> len(text)
+          26000000000
+
+La variable text ci-dessus contient 2,6 milliards de caractères, formés par la répétition de lettres ASCII, ce que tu peux vérifier avec la fonction len() de Python.
+Et pourtant, accéder au premier, au milieu, au dernier ou à n’importe quel caractère de cette chaîne est tout aussi rapide.
+
+- 🧱 Array (en général, comme en C ou Java) →
+✅ l’accès à un élément par index est toujours en O(1), donc le premier, le dernier ou le millième prennent le même temps. (Attention ce n'est pas le cas pour le déplacement ou suppression d’éléments, qui eux ne sont pas en O(1).)
+
+- 🐍 Python list →
+même chose : c’est un tableau dynamique, donc l’accès par index est O(1).
+
+- 🧩 dict →
+l’accès à une clé est aussi O(1) en moyenne grâce à la table de hachage (mais pas garanti en cas de collisions extrêmes).
+
+- ⚙️ set ->
+identique à dict, il utilise une hash table, donc test d’appartenance et insertion en O(1).
 
 ## Simple Sorting
 ### Insertion Sort
