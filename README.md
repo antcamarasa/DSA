@@ -8,9 +8,9 @@
   - [Insertion Sort](#insertion-sort)
 - [Recursion](#recursion) 
 - [Complex Sorting](#complex-sorting)
-  - [Heap Sort](#heap-sort)
   - [Merge Sort](#merge-sort)
-  - [Quick Sort](#quick-sort)  
+  - [Quick Sort](#quick-sort)
+  - [Heap Sort](#heap-sort)
 - [Advanced Sorting](#advanced-sorting)
   - [Shell Sort](#shell-sort) 
   - [Radix Sort](#shell-sort)
@@ -23,7 +23,84 @@
 - [Graphs](#graphs)
 
 ---
-  
+
+## Hashing  
+
+### Table des matières
+### 1. Get to Know the Hash Table Data Structure
+- [Hash Table vs Dictionary](#hash-table-vs-dictionary)
+- [Hash Table: An Array With a Hash Function](#hash-table-an-array-with-a-hash-function)
+
+### 2. Understand the Hash Function
+- [Examine Python’s Built-in hash()](#examine-pythons-built-in-hash)
+- [Dive Deeper Into Python’s hash()](#dive-deeper-into-pythons-hash)
+- [Identify Hash Function Properties](#identify-hash-function-properties)
+- [Compare an Object’s Identity With Its Hash](#compare-an-objects-identity-with-its-hash)
+- [Make Your Own Hash Function](#make-your-own-hash-function)
+
+### 3. Build a Hash Table Prototype in Python With TDD
+- [Take a Crash Course in Test-Driven Development](#take-a-crash-course-in-test-driven-development)
+- [Define a Custom HashTable Class](#define-a-custom-hashtable-class)
+- [Insert a Key-Value Pair](#insert-a-key-value-pair)
+- [Find a Value by Key](#find-a-value-by-key)
+- [Delete a Key-Value Pair](#delete-a-key-value-pair)
+- [Update the Value of an Existing Pair](#update-the-value-of-an-existing-pair)
+- [Get the Key-Value Pairs](#get-the-key-value-pairs)
+- [Use Defensive Copying](#use-defensive-copying)
+- [Get the Keys and Values](#get-the-keys-and-values)
+- [Report the Hash Table’s Length](#report-the-hash-tables-length)
+- [Make the Hash Table Iterable](#make-the-hash-table-iterable)
+- [Represent the Hash Table in Text](#represent-the-hash-table-in-text)
+- [Test the Equality of Hash Tables](#test-the-equality-of-hash-tables)
+
+### 4. Resolve Hash Code Collisions
+- [Find Collided Keys Through Linear Probing](#find-collided-keys-through-linear-probing)
+- [Use Linear Probing in the HashTable Class](#use-linear-probing-in-the-hashtable-class)
+- [Let the Hash Table Resize Automatically](#let-the-hash-table-resize-automatically)
+- [Calculate the Load Factor](#calculate-the-load-factor)
+- [Isolate Collided Keys With Separate Chaining](#isolate-collided-keys-with-separate-chaining)
+
+### 5. Retain Insertion Order in a Hash Table
+- [Preserve Order While Maintaining Performance](#preserve-order-while-maintaining-performance)
+
+### 6. Use Hashable Keys
+- [Hashability vs Immutability](#hashability-vs-immutability)
+- [The Hash-Equal Contract](#the-hash-equal-contract)
+
+### 7. Conclusion
+- [Wrap-Up and Key Takeaways](#wrap-up-and-key-takeaways)
+
+--- 
+
+### Introduction
+Inventée il y a plus d'un demi siècle, la table de hachage(hash table) est une structure de données classique, fondamentale en programmation. 
+
+Encore aujourd'hui, elle permet de résoudre de nombreux problème concrets, comme :
+- l’indexation des tables d’une base de données,
+- la mise en cache de valeurs calculées,
+- ou encore l’implémentation d’ensembles (sets).
+
+Certains languages possède leur propre table de hachage intégrée, il est indispensable de comprendre comment fonctionne une table de hachage en interne.
+
+On va voir :
+- Quelle est la différence entre une table de hachage et un dictionnaire
+- Comment implémenter une table de hachage en python depuis zéro.
+- Comment gérer les collision de hachage et autres difficultés
+- Quelles sont les caractéristiques souhaitables d'une fonction de hachage
+- Comment la fonction hash() fonctionne en coulissses
+
+### Découvrir la structure de données "Table de hachage"
+Avant d'aller plus loin, il est utile de se familiariser avec le terminologie, car elle peut préter a confusion.
+Dans le languge courant, les termes table de hachage (hash table) ou Hashmap sont souvent utilisés comme synonyme du mot dictionnaire (dictionary).
+Cependant, il existe une différence subtile :
+- La table de hachage est un cas particulier du concept plus général de dicitonnaire(python), Hashmap(java) et objet en JS.
+
+Pour la simpliciter de ce cours on utilisera python pour l'implémentation ainsi que le terme dictionnaire.
+
+### Table de hachage vs Dictionnaire
+En informatique 
+
+
 ## Simple Sorting
 ### Insertion Sort
 **Sous-menu**
@@ -181,3 +258,14 @@ Important : on ne crée pas de nouveaux tableaux. On travaille en place dans arr
             arr[current_idx[idx]] = current_value
 
     return shell_sort(arr, gap // 2)
+
+## Complex sorting
+### Heap Sort
+Fait, A réécrire correctement.
+
+### Merge Sort
+Fait, a Réécrire correctement.
+
+### HeapSort
+A faire après avoir vu les arbres. informations a vérifier.
+
