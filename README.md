@@ -441,18 +441,60 @@ La récursion peut se faire sans problème : [low, p-1] et [p+1, high].
 --- 
 
 #### Version Partition Hoare(pivot = milieu ou autre)
-- On a deux pointeurs i et j :
-  - i avance jusqu’à trouver un élément plus grand que le pivot.
-  - j recule jusqu’à trouver un élément plus petit que le pivot.
-  - on échange ces deux éléments, puis on continue.
-    -  Quand i >= j, la partition est terminée. 
 
-✅ Le pivot n’est pas forcément à sa place finale, après chaque itération mais :
-- tous les éléments à gauche de j sont ≤ pivot,
-- tous ceux à droite de j sont ≥ pivot.
-  -  Donc la récursion peut se faire sur [low, j] et [j+1, high] 
+L'objectif est le meme que pour l'implémentation précédente, on determine un pivot, ici au mileu de notre liste. Ensuite on swap les éléments pour que les plus petits soit à sa gauche et les plus grand a sa droite.
 
-         Code : A implémenter
+Mais attention, a la fin d'une itération l'element que l'on a determiné comme pivot n'est pas encore a sa position final, donc il faut l'inclure dans les appels récursif suivant, mais pas dans les deux au risque d'avoir une appel recursif infini.
+
+1. Choix du pivot
+
+        pivot_value = arr[(low+high) // 2]
+
+2. Deux pointeurs
+   - i part de low et avance vers la droite
+   - j part de high et recule vers la gauche
+
+3. Boucle de partition(tant que i < j)
+   - Avance i tant que arr[i] < pivot_value -> i s'arrête sur le premier élément supérieur a pivot car il doit être mis a droite.
+   - Recule j tant que arr[j] > pivot_value -> j s'arrête sur le premier element inférieur a pivot car il doit être mis a gauche.
+   - A ce moment précis :
+     - arr[i] est un candidat du mauvais côté (>= pivot mais a gauche et doit être mis a droite)
+     - arr[j] est un candidat du mauvais côté (<= pivot mais a droite et doit être mis a gauche)
+
+  - Swap arr[i] ↔ arr[j] pour remettre chacun de son bon côté.
+  - Progrès garanti : i += 1, j -= 1.
+  - On répète tant que i < j.
+
+A ce moment : 
+- arr[low ... j] < pivot
+- arr[i ... high] > pivot
+
+4. Appel récursif
+- quick_sort_pivot_middle(arr, low, j)
+- quick_sort_pivot_middle(arr, i,   high)
+
+La condition d’arrêt if low >= high: return empêche de redescendre sur des segments vides/mono-élément.
+
+    def quick_sort_pivot_middle(arr, low, high):
+      if low >= high:
+        return
+
+      pivot_start_position = (low + high) // 2
+      pivot_value = arr[pivot_start_position]
+      i = low
+      j = high
+
+      while i < j:
+        while arr[i] < pivot_value:
+            i += 1
+        while arr[j] > pivot_value:
+            j -= 1
+        arr[i], arr[j] = arr[j], arr[i]
+        i +=1
+        j -=1
+
+      quick_sort_pivot_middle(arr, low, j)
+      quick_sort_pivot_middle(arr, i, high)
 
 ---
 
