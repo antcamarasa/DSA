@@ -487,13 +487,6 @@ Vue arborescente rapide
 
 Résultat final → [2,3,4,6,7,8]
 
-Complexité :
--------------
-- Temps moyen : O(n log n)
-- Pire cas : O(n²)
-
-
-
 #### Version Lomuto(pivot = fin)
 Cette version de quick sort à pour but de trié en place un tableau en choisisant un pivot, dans ce cas le dernier éléments de la liste, et de comparer cet élément avec tous les autres éléments réstant afin de trouver sa position finale en déplacant à gauche tous les éléments plus petit que pivot et a droite tous les éléments plus grand que pivot. 
 
