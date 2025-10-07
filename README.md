@@ -378,9 +378,77 @@ Lorsqu’on fusionne deux tableaux triés, on les compare élément par élémen
 - On répète jusqu’à ce qu’un des deux tableaux soit vide.
 - Puis on ajoute le reste du tableau non vide (puisqu’il est déjà trié).
 
+#### Vue d'ensemble 
+
+Exemple d'entrée :
+[38, 27, 43, 3, 9, 82, 10]
+
+1. Décomposition (divide)
+----------------------
+
+                              [38, 27, 43, 3, 9, 82, 10]
+                             /                         \
+                   [38, 27, 43, 3]                   [9, 82, 10]
+                  /               \                 /          \
+            [38, 27]            [43, 3]         [9, 82]       [10]
+            /     \            /     \          /     \         |
+         [38]    [27]       [43]    [3]      [9]    [82]      [10]
+
+
+2. Fusions (conquer)
+-----------------
+
+Étape 1 – fusion de paires élémentaires:
+[38] + [27] -> [27, 38]
+[43] + [3]  -> [3, 43]
+[9]  + [82] -> [9, 82]
+[10]        -> [10] (déjà trié)
+
+Résultat partiel:
+[27, 38]         [3, 43]           [9, 82]         [10]
+
+Étape 2 – fusion des sous-tableaux triés:
+[27, 38] + [3, 43]  -> [3, 27, 38, 43]
+[9, 82]  + [10]     -> [9, 10, 82]
+
+Résultat partiel:
+[3, 27, 38, 43]                     [9, 10, 82]
+
+Étape 3 – fusion finale:
+[3, 27, 38, 43] + [9, 10, 82] 
+=>
+[3, 9, 10, 27, 38, 43, 82]
+
+
+Arbre compltet
+--------------
+
+                         [38,27,43,3,9,82,10]
+                       /                       \
+           [38,27,43,3]                         [9,82,10]
+          /             \                      /         \
+      [38,27]          [43,3]               [9,82]      [10]
+      /     \          /   \               /    \
+   [38]   [27]      [43]  [3]           [9]    [82]
+
+      \     /          \   /               \    /
+     [27,38]          [3,43]              [9,82]        [10]
+
+          \             /                      \         /
+           [3,27,38,43]                          [9,10,82]
+                       \                         /
+                        [3,9,10,27,38,43,82]
+
+
+Rappel complexité
+-----------------
+- Temps: O(n log n)
+- Espace: O(n) (fusion externe)
+
 ---
 
 ### Quick Sort
+
 #### Version Lomuto(pivot = fin)
 Cette version de quick sort à pour but de trié en place un tableau en choisisant un pivot, dans ce cas le dernier éléments de la liste, et de comparer cet élément avec tous les autres éléments réstant afin de trouver sa position finale en déplacant à gauche tous les éléments plus petit que pivot et a droite tous les éléments plus grand que pivot. 
 
