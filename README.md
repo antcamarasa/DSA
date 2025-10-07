@@ -449,6 +449,53 @@ Rappel complexité
 
 ### Quick Sort
 
+Quick Sort – visualisation ASCII
+================================
+Le Quick Sort est un algorithme de tri récursif fondé sur le principe du "divide and conquer". Il choisit un pivot, puis partitionne le tableau en éléments plus petits et plus grands que ce pivot.
+
+Ensuite, il trie récursivement ces sous-tableaux avant de les concaténer pour obtenir le résultat final.
+
+Exemple : [8, 3, 7, 4, 2, 6]
+
+1️⃣ Choix du pivot = 4  
+Partition :
+→ [3, 2]   [4]   [8, 7, 6]
+
+2️⃣ Tri récursif :
+[3, 2]  -> pivot = 2  -> [ ] [2] [3]
+[8, 7, 6] -> pivot = 6 -> [ ] [6] [8, 7]
+                      -> [ ] [7] [8]
+
+3️⃣ Fusion des résultats :
+[2, 3] + [4] + [6, 7, 8] = [2, 3, 4, 6, 7, 8]
+
+
+Vue arborescente rapide
+-----------------------
+
+                [8,3,7,4,2,6]
+                        |
+                     pivot=4
+                    /    |    \
+              [3,2]     [4]   [8,7,6]
+               |               |
+             p=2             p=6
+             /|\             /|\
+           []2[3]          []6[8,7]
+                               |
+                             p=7
+                             /|\
+                           []7[8]
+
+Résultat final → [2,3,4,6,7,8]
+
+Complexité :
+-------------
+- Temps moyen : O(n log n)
+- Pire cas : O(n²)
+
+
+
 #### Version Lomuto(pivot = fin)
 Cette version de quick sort à pour but de trié en place un tableau en choisisant un pivot, dans ce cas le dernier éléments de la liste, et de comparer cet élément avec tous les autres éléments réstant afin de trouver sa position finale en déplacant à gauche tous les éléments plus petit que pivot et a droite tous les éléments plus grand que pivot. 
 
@@ -508,7 +555,7 @@ La récursion peut se faire sans problème : [low, p-1] et [p+1, high].
       Code : A implémenter
 --- 
 
-#### Version Partition Hoare(pivot = milieu ou autre)
+### Version Partition Hoare(pivot = milieu ou autre)
 
 L'objectif est le meme que pour l'implémentation précédente, on determine un pivot, ici au mileu de notre liste. Ensuite on swap les éléments pour que les plus petits soit à sa gauche et les plus grand a sa droite.
 
@@ -563,6 +610,32 @@ La condition d’arrêt if low >= high: return empêche de redescendre sur des s
 
       quick_sort_pivot_middle(arr, low, j)
       quick_sort_pivot_middle(arr, i, high)
+
+### Version pure 
+
+    def quick_sort_wrong(arr):
+    if len(arr) == 0:
+        return arr
+
+
+    pivot = arr[-1]
+    idx_to_delete = []
+
+    for i in range(len(arr) - 1):
+        if arr[i] > pivot:
+            idx_to_delete.append(i)
+            arr.append(arr[i])
+
+    for idx in reversed(idx_to_delete):
+        del arr[idx]
+
+    pivot_index = arr.index(pivot)
+
+    less = arr[:pivot_index]
+    greater = arr[pivot_index + 1:]
+
+    return quick_sort_wrong(less) + [pivot] + quick_sort_wrong(greater)
+    
 
 ---
 
