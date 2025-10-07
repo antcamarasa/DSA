@@ -449,8 +449,6 @@ Rappel complexité
 
 ### Quick Sort
 
-Quick Sort – visualisation ASCII
-================================
 Le Quick Sort est un algorithme de tri récursif fondé sur le principe du "divide and conquer". Il choisit un pivot, puis partitionne le tableau en éléments plus petits et plus grands que ce pivot.
 
 Ensuite, il trie récursivement ces sous-tableaux avant de les concaténer pour obtenir le résultat final.
