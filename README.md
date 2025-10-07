@@ -382,6 +382,53 @@ Lorsqu’on fusionne deux tableaux triés, on les compare élément par élémen
 
 ### Quick Sort
 #### Version Lomuto(pivot = fin)
+Cette version de quick sort à pour but de trié en place un tableau en choisisant un pivot, dans ce cas le dernier éléments de la liste, et de comparer cet élément avec tous les autres éléments réstant afin de trouver sa position finale en déplacant à gauche tous les éléments plus petit que pivot et a droite tous les éléments plus grand que pivot. 
+
+A la fin de la première itération on a pivot a sa position finale, a sa gauche tous les éléments plus petits que pivot et a sa droite tous les éléments plus grand que lui. De cette facon nous pouvons rappeler de facon récursive la fonction afin de la trié dans son ensemble.
+
+Comment cela fonctionne ?
+
+Le plus gros challenge de cet algorithme de trie est de comparer chaque element a pivot et de swap les éléments plus petits a sa gauche sans modifier pivot avant d'avoir terminé notre itération. 
+
+                      idx  0, 1, 2, 3, 4, 5, 6
+                ma_list = [3, 6, 1, 2, 7, 5, 4]
+                                             ^
+                                             |
+                                           pivot
+              
+              pivot_final_index = 0
+              pivot_index = high 
+              pivot_value = arr[high]
+
+              for j in range(low = 0, high = len(arr-1):
+                  #on compare si la valeur < à pivot a gauche
+                  
+                  if arr[j] < pivot_value:
+                    #Alors on swap et on incrémente (double opération pour : 
+                    # - identifier la position final de pivot)
+                    # - Positionner a gauche les éléments plus petits, a droite les éléments plus grands.
+                    arr[j], arr[pivot_final_position] = arr[pivot_final_position], arr[j]
+                    pivvot_final_position += 1
+
+          #Ici, on obtient la position final de pivot pour l'élement 4 donc il nous reste à l'insérer, swapper:
+          arr[pivot_final_index], arr[pivot_index] = arr[pivot_index], arr[pivot_final_index]
+
+          # Appel récursig sur la partie gauche et droite
+          quick_sort_pivot_ending(arr, low, pivot_start_position - 1)
+          quick_sort_pivot_ending(arr, pivot_start_position + 1, high)
+                
+Explication : 
+
+L'objectif est de trouver la position finale de pivot
+1. On crée un pointeur i qui démarre à la borne low de notre fonction. Au début low = 0 et high = len(arr -1)
+2. On boucle sur toutes la liste avec ub incrément j et on compare => j < valeur_pivot ? Si oui on swap la valeur du pointeur i avec la valeur du pointeur j et on incrémente i. 
+3. A la fin de cette itération i est donc l'index ou doit se trouver pivot, donc il nous reste qu'a swapper pivot a cet endroit de la liste.
+4. On rapelle cette fonction sur la partie de gauche donc => low, pivot_position - 1
+5. On rapelle cette fonction sur la partie de droit donc => pivot_position + 1, high
+6. On obtient une liste trié via l'algorithme quicksort !
+
+
+
   - On avance un pointeur i au fur et à mesure qu’on rencontre des éléments plus petits que le pivot.
   - On ne fait qu’une seule passe.
   - À la fin, on échange pivot ↔ arr[i].
