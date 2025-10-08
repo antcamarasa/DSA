@@ -246,6 +246,11 @@ Et si tu respectes certaines règles, tu pourras aussi créer tes propres types 
 ----
 
 ## Simple Sorting
+
+### Bubble Sort
+
+### Selection Sort
+
 ### Insertion Sort
 **Sous-menu**
 - [Présentation](#insertion-sort--presentation)
@@ -319,9 +324,11 @@ On part du principe que le premier élément 5 est trié. Donc la partie a gauch
 
     return arr
 
----
+--- 
 
-## Advanced Sorting
+### Shell Sort
+
+--- 
 
 ### Merge Sort
 Le merge sort (ou tri par fusion) est un algorithme de tri diviser pour régner (divide and conquer).
@@ -629,73 +636,74 @@ La condition d’arrêt if low >= high: return empêche de redescendre sur des s
     
 
 ---
+### 🌀 Shell Sort
+####🔹 Présentation
 
-### Shell Sort
-- [Présentation](#shell-sort--presentation)
-Shell sort est un algorithme de tri en place qui généralise l’insertion sort :
-- il trie d’abord des sous-suites d’éléments espacés d’un gap, puis réduit gap progressivement jusqu’à 1.
+Le Shell sort est une amélioration du tri par insertion.Il commence par trier des groupes d’éléments espacés (appelés gaps), puis réduit progressivement cet écart jusqu’à 1.
 
-Ce procédé permet aux petits éléments d’avancer rapidement vers leur zone cible, rendant le dernier passage (insertion classique à gap=1) beaucoup plus efficace.
-
----
-
-Entrée : arr = [3, 6, 2, 8, 1]
-
-#### 1. Initialiser le gap
-  gap = len(arr) // 2 = 5 // 2 = 2.
-
-#### 2. Former les sous-suites (conceptuelles)
-On considère les éléments espacés de gap
-- Sous-suite A (indices 0,2,4) → valeurs 3, 2, 1
-- Sous-suite B (indices 1,3) → valeurs 6, 8
-
-Important : on ne crée pas de nouveaux tableaux. On travaille en place dans arr, aux positions i(Une liste d’index peut aider à comprendre, mais n’est pas nécessaire pour l’implémentation.)
-
-#### 3. Appliquer l’insertion gappée à chaque sous-suite
-- Sous-suite A 3, 2, 1 → tri par insertion (déplacements vers la droite, puis insertion de la “clé”) → 1, 2, 3
-  - arr devient : [1, 6, 2, 8, 3] (car on a modifié directement aux indices 0,2,4).
-- Sous-suite B 6, 8 → déjà triée
-  - arr reste : [1, 6, 2, 8, 3]
-
-#### 4. Réduire le gap
-  gap = gap // 2 = 1
-
-#### 5. Dernier passage (gap = 1)
-- Appliquer un insertion sort classique sur tout arr.
-- Résultat : [1, 2, 3, 6, 8].
-
-#### 6) Fin
-- Tableau trié.
-    
-      def merge_sort(arr):
-        if len(arr) <= 1:
-           return arr
-
-       middle = len(arr) // 2
-       left = merge_sort(arr[:middle])
-       right = merge_sort(arr[middle:])
-
-       new_arr = []
-       left_index = right_index = 0
-
-       while left_index < len(left) and right_index < len(right):
-        if left[left_index] <= right[right_index]:
-            new_arr.append(left[left_index])
-            left_index += 1
-        else:
-            new_arr.append(right[right_index])
-            right_index += 1
-
-      new_arr.extend(left[left_index:])
-      new_arr.extend(right[right_index:])
-
-      return new_arr
-
-
+Quand le gap vaut 1, le Shell sort devient un simple insertion sort, mais sur un tableau déjà “presque trié” — donc bien plus rapide.
 
 ---
 
-### Basic Implementation
+#### 🔹 Principe général
+- Choisir un gap initial, souvent len(arr) // 2.
+- Former des sous-suites conceptuelles d’éléments espacés de gap.
+- Appliquer un tri par insertion sur chacune de ces sous-suites (en place).
+- Réduire le gap (par exemple, gap //= 2) et recommencer.
+- Quand gap == 1, on effectue un dernier tri par insertion classique.
+
+Ainsi, les petits éléments peuvent “avancer” rapidement vers le début du tableau, ce qui accélère fortement la convergence vers un tableau trié.
+
+#### 🔹 Exemple illustré
+
+Entrée :
+
+      arr = [3, 6, 2, 8, 1]
+
+Étape 1 — Initialisation
+
+    gap = len(arr) // 2 = 5 // 2 = 2
+
+Étape 2 — Sous-suites conceptuelles (espacement de 2)
+
+    Index :   0   1   2   3   4
+    Valeur : [3,  6,  2,  8,  1]
+
+    Sous-suites selon gap=2 :
+    A : (0 → 2 → 4)  → [3, 2, 1]
+    B : (1 → 3)      → [6, 8]
+
+Visualisation ASCII (les flèches représentent le lien "espacé de gap") :
+
+    A : 3 → 2 → 1
+    B : 6 → 8
+
+
+Étape 3 — Tri par insertion sur chaque sous-suite
+
+Sous-suite A [3, 2, 1] → triée en [1, 2, 3]
+→ Modifie directement arr aux indices 0, 2, 4 → arr = [1, 6, 2, 8, 3]
+
+Sous-suite B [6, 8] → déjà triée
+→ arr reste inchangé.
+
+État du tableau :
+        
+        arr = [1, 6, 2, 8, 3]
+
+Étape 4 — Réduction du gap
+
+    gap = gap // 2 = 1
+
+Étape 5 — Dernier passage (gap = 1)
+
+Un insertion sort classique sur tout le tableau 
+
+      arr = [1, 2, 3, 6, 8]
+      
+--- 
+### Implementation 
+#### Basic Implementation
     def insertion_sort_correction(arr):
         n = len(arr)
         for current in range(1, n):
@@ -736,6 +744,31 @@ Important : on ne crée pas de nouveaux tableaux. On travaille en place dans arr
             arr[current_idx[idx]] = current_value
 
     return shell_sort(arr, gap // 2)
+
+
+#### Better Implementation
+
+        def shell_sort(arr):
+        gap = len(arr) // 2
+
+        while gap > 0:
+          for start_index in range(gap):
+            gap_insertion_sort(arr, start_index, gap)
+        gap = gap //2
+
+
+        def gap_insertion_sort_2(arr, start_index, gap):
+          for i in range(start_index+gap, len(arr), gap):
+          current_value = arr[i]
+          position = i
+
+          while position >= gap and arr[position-gap] < current_value:
+            arr[position] = arr[position-gap]
+            position = position-gap
+          arr[position] = current_value
+
+
+
 
 ## Complex sorting
 ### Heap Sort
