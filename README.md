@@ -249,9 +249,35 @@ Et si tu respectes certaines règles, tu pourras aussi créer tes propres types 
 
 ### Bubble Sort
 
+Le Bubble Sort compare les éléments adjacents et les échange s’ils sont dans le mauvais ordre, ce qui fait remonter progressivement les plus grands éléments vers la fin du tableau.
+
+À chaque passage, la plus grande valeur “bulle” vers le haut, réduisant la zone à trier.
+
+              def bubble_sort(arr):
+                n = len(arr)
+                for i in range(n - 1):
+                  # On parcourt le tableau jusqu'à la zone non triée
+                  for j in range(0, n - i - 1):
+                  # Si les éléments sont dans le mauvais ordre, on les échange
+                    if arr[j] > arr[j + 1]:
+                      arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                return arr
+
+          
+
+
 --- 
 
 ### Selection Sort
+
+Le Selection Sort parcourt le tableau pour trouver le plus petit élément et le place en première position, puis répète l’opération pour le reste du tableau.
+Ainsi, à chaque itération, la partie gauche du tableau est triée, tandis que la partie droite reste à trier.
+
+     def selection_sort(arr):
+      for i in range(len(arr) - 1):
+        for j in range(i + 1, len(arr)):
+            if arr[j] < arr[i]:
+                arr[i], arr[j] = arr[j], arr[i]
 
 ---
 
