@@ -648,7 +648,7 @@ La condition d’arrêt if low >= high: return empêche de redescendre sur des s
 
 ---
 ### 🌀 Shell Sort
-####🔹 Présentation
+#### 🔹 Présentation
 
 Le Shell sort est une amélioration du tri par insertion.Il commence par trier des groupes d’éléments espacés (appelés gaps), puis réduit progressivement cet écart jusqu’à 1.
 
