@@ -249,34 +249,23 @@ Et si tu respectes certaines règles, tu pourras aussi créer tes propres types 
 
 ### Bubble Sort
 
-### Selection Sort
+--- 
 
-### Insertion Sort
-**Sous-menu**
-- [Présentation](#insertion-sort--presentation)
-- [Mauvaise interprétation (à éviter)](#insertion-sort--mauvaise-interpretation)
-- [Version correcte (décalages, pas de swaps)](#insertion-sort--version-correcte)
-- [Idée clé](#insertion-sort--idee-cle)
+### Selection Sort
 
 ---
 
-#### Présentation
-<a id="insertion-sort--presentation"></a>
+### Insertion Sort
 
 Le tri par insertion construit le tableau final trié **élément par élément** en maintenant un **préfixe trié**.  
 Il est **moins efficace** que quicksort/heapsort/merge sort sur de grands jeux de données, mais reste appréciable pour sa **simplicité**, son efficacité sur **petits tableaux** ou **données presque triées**, sa **stabilité** et son caractère **en place** (in-place).
 
----
-
 #### Mauvaise interprétation (à éviter)
-<a id="insertion-sort--mauvaise-interpretation"></a>
 
 On voit parfois une version qui **swappe** les éléments à chaque comparaison. Même si le tableau peut finir trié, ce **n’est pas** le tri par insertion : l’algorithme correct **décale** les éléments plus grands vers la droite puis **insère** la clé **une seule fois**.
 
----
 
 #### Version correcte (décalages, pas de swaps)
-<a id="insertion-sort--version-correcte"></a>
 
 Exemple avec `arr = [5, 3, 8, 4, 2]` (tri croissant) :
 
@@ -323,10 +312,6 @@ On part du principe que le premier élément 5 est trié. Donc la partie a gauch
         arr[correct_position + 1] = current_card
 
     return arr
-
---- 
-
-### Shell Sort
 
 --- 
 
