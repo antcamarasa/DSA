@@ -322,7 +322,7 @@ On part du principe que le premier élément 5 est trié. Donc la partie a gauch
 
 - **Résultat final** : `[2, 3, 4, 5, 8]`
 
-# Insertion sort — version basique (in-place, stable)
+#### Insertion sort — version basique (in-place, stable)
       def insertion_sort(arr):
         n = len(arr)
         for current in range(1, n):
