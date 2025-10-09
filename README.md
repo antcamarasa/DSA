@@ -10,7 +10,7 @@
 - [Complex Sorting](#complex-sorting)
   - [Merge Sort](#merge-sort)
   - [Quick Sort](#quick-sort)
-  - [Heap Sort](#heap-sort)
+  - [Tim Sort](#tim-sort)
 - [Advanced Sorting](#advanced-sorting)
   - [Shell Sort](#shell-sort) 
   - [Radix Sort](#shell-sort)
@@ -428,8 +428,102 @@ La condition d’arrêt if low >= high: return empêche de redescendre sur des s
     greater = arr[pivot_index + 1:]
 
     return quick_sort_wrong(less) + [pivot] + quick_sort_wrong(greater)
-    
 
+---
+
+### Tim Sort
+
+L'algorithme de tri mélange le meilleur des deux mondes entre un INSERTION SORT (trés éfficaces dans certains cas) et MERGE SORT (trés efficaces dans d'autre cas).
+
+1. Découper le tableau en runs (petits morceaux) et trier chaque run avec insertion sort.
+2. Fusionner par passes via merger sort, les runs triés (taille run, puis 2*run, 4*run, …) jusqu’à couvrir tout le tableau.
+
+#### Phase 1 : Trier les runs
+
+Premièrement, on va créer des sous liste de arr de la longeur de run.
+Deuxièmement, on les tris avec un insertion sort et on remplace nos éléments pas trié par nos éléments triés
+
+    # intput [6, 4, 3, 5, 1, 2], run = 2
+    # On va créer des run c'est a dre sous-liste d'input de longeur 2
+    # run_1 = [6, 4] -> insertion_sort([4, 6]) -> On remplace sur notre input par le result => [4, 6, 3, 5, 1, 2]
+    # run_2 = [5, 3] -> insertion_sort([5, 3) -> On remplace sur notre input par le result => [4, 6, 5, 3, 1, 2]
+    # run_2 = [1, 2] -> insertion_sort([1, 2) -> deja trié, mais en remplac quand meme ce qui ne change rien => [4, 6, 5, 3, 1, 2]
+
+### Phase 2 : Fusion (merge) par passe
+
+Maintenant que nos runs sont trié on va merge les runs adjacents jusqu'a obtenir une liste totalement trié:
+
+      [4,6] [3,5] [1,2] [7,9]
+         |     |     |     |
+          merge       merge 
+      => [3,4,5,6]  [1,2,7,9]
+
+On continue pour obtenir version totalement trié
+      
+      => [1,2,3,4,5,6,7,9]
+
+Bien sur on crée des copies temporaire du tableau via un SLICE notre arr original aux bornes correspondant aux run et aux run*2 ainsi de suite jusqu'a la fin du tableau. 
+
+Ces copies vont être passé a notre fonction merge et le retour de cette fonction  va venir remplacer cette partie du tableau par la nouvelle partie trié.
+
+### Implémentation : 
+
+#--------- TIM SORT Correction--------------
+
+    def merge_sort_2(arr_1, arr_2):
+      new_arr = []
+
+      idx_left = 0
+      idx_right = 0
+
+      while idx_left < len(arr_1) and idx_right < len(arr_2):
+        if arr_1[idx_left] <= arr_2[idx_right]:
+            new_arr.append(arr_1[idx_left])
+            idx_left += 1
+        else:
+            new_arr.append(arr_2[idx_right])
+            idx_right += 1
+
+      if len(arr_1) > len(arr_2):
+        new_arr += arr_1[idx_left:]
+      else:
+        new_arr += arr_2[idx_right:]
+
+      return new_arr
+
+      def time_sort_correction(arr, run):
+        #1. Créer des sous liste de arr de la longeur de run.
+        #2. On les tris avec un insertion sort et on remplace nos éléments pas trié par nos éléments triés
+
+    # intput [6, 4, 3, 5, 1, 2], run = 2
+    # On va créer des run c'est a dre sous-liste d'input de longeur 2
+    # run_1 = [6, 4] -> insertion_sort([4, 6]) -> On remplace sur notre input par le result => [4, 6, 3, 5, 1, 2]
+    # run_2 = [5, 3] -> insertion_sort([5, 3) -> On remplace sur notre input par le result => [4, 6, 5, 3, 1, 2]
+    # run_2 = [1, 2] -> insertion_sort([1, 2) -> deja trié, mais en remplac quand meme ce qui ne change rien => [4, 6, 5, 3, 1, 2]
+    for i in range(0, len(arr), run):
+        arr[i: i+run] = insertion_sort(arr[i:i + run])
+        tot = arr[i: i+run]
+
+
+    #3. Maintenant qu'on a nos sous liste trié, on va merger les sous listes
+    #   OR = merge(arr[i, i+run], arr[i + run, i+run*2])
+    #   On remplace maintenant, arr[i à i + run*2] = OR
+    #   OR_2 on fait la meme chose pour OR2
+    
+    #4. Tant que copy_of_run < longeur du tableau on continue mais en incrémentant copy_of_run pour trier la suite :
+    # copy_of_run = copy_of_run * 2
+    
+    #5. Enfin notre liste est trié par TimSort() !
+
+    copy_of_run = run
+
+    while copy_of_run < len(arr):
+        for i in range(0, len(arr), copy_of_run*2):
+            arr[i:i + copy_of_run * 2] = merge_sort_2(arr[i: i + copy_of_run], arr[i + copy_of_run : i + copy_of_run*2])
+        copy_of_run = copy_of_run * 2
+
+    return arr
+  
 ---
 ### 🌀 Shell Sort
 #### 🔹 Présentation
