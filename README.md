@@ -660,16 +660,117 @@ Un insertion sort classique sur tout le tableau
             position = position-gap
           arr[position] = current_value
 
+---
+
+## Linear sorting
+### Counting sort
+
+Le **Counting Sort** (ou tri par comptage) est un algorithme de tri **non comparatif**
+utilisé pour trier des entiers lorsque l’intervalle de valeurs (min → max) est
+raisonnablement petit.
+
+Il repose sur l’idée de **compter combien de fois chaque valeur apparaît**
+puis de reconstruire le tableau trié à partir de ces comptages.
 
 
+⚙️ Complexité :
+    - Temps : O(n + k)
+        → n : taille du tableau
+        → k : valeur maximale (max(data))
+    - Espace : O(k)
+    - Stable : ✅ (dans la version complète)
+    - En place : ❌ (on crée un tableau final)
 
-## Complex sorting
-### Heap Sort
-Fait, A réécrire correctement.
 
-### Merge Sort
-Fait, a Réécrire correctement.
+Ce tri est très performant pour des entiers bornés, et il est souvent utilisé comme base pour le **Radix Sort**.
 
-### HeapSort
-A faire après avoir vu les arbres. informations a vérifier.
+
+#### Explication détaillée
+
+
+Prenons un exemple simple :
+
+    data = [1, 0, 2, 1, 1, 0, 1, 0, 5]
+
+Étapes :
+
+(1) Trouver la valeur maximale
+    
+    max_value = 5
+
+(2) Créer un tableau de comptage
+    
+    count = [0, 0, 0, 0, 0, 0]  # taille = max_value + 1
+
+(3) Compter les occurrences de chaque valeur
+    
+    data : [1, 0, 2, 1, 1, 0, 1, 0, 5]
+    
+    count devient :
+          valeur :  0  1  2  3  4  5
+          count  = [3, 4, 1, 0, 0, 1]
+
+(4) Cumul des comptages (important pour la stabilité)
+    On transforme count en “positions cumulées” :
+    
+          valeur :  0  1  2  3  4  5
+          count  = [3, 7, 8, 8, 8, 9]
+    
+  ⮕ Cela indique où chaque valeur doit aller dans le tableau trié.
+
+ASCII VISUEL :
+--------------------------------------------------
+Index:      0   1   2   3   4   5   6   7   8
+data:       [1] [0] [2] [1] [1] [0] [1] [0] [5]
+
+count init:  0   0   0   0   0   0
+count freq:  3   4   1   0   0   1
+count cumu:  3   7   8   8   8   9
+
+Interprétation :
+- Les 3 premiers emplacements (0,1,2) sont pour les “0”.
+- Les indices 3 à 6 sont pour les “1”.
+- L’indice 7 est pour le “2”.
+- L’indice 8 est pour le “5”.
+
+(5) Reconstruction du tableau final (de droite à gauche)
+    On parcourt data à l’envers pour garantir la stabilité :
+        - on décrémente count[value]
+        - on place value à l’indice indiqué dans count
+
+    Résultat final :
+        final_arr = [0, 0, 0, 1, 1, 1, 1, 2, 5]
+
+
+3. IMPLEMENTATION COMPLÈTE (STABLE)
+-----------------------------------
+    def counting_sort_real_implementation(data):
+    # Exemple : data = [1, 0, 2, 1, 1, 0, 1, 0, 5]
+
+    # 1. Trouver la valeur maximale
+    max_value = max(data)
+
+    # 2. Créer un tableau de comptage
+    count = [0] * (max_value + 1)
+
+    # 3. Compter les occurrences
+    for num in data:
+        count[num] += 1
+    # Exemple après cette étape :
+    # count = [3, 4, 1, 0, 0, 1]
+
+    # 4. Transformer count en tableau cumulatif
+    for i in range(1, len(count)):
+        count[i] += count[i - 1]
+    # count = [3, 7, 8, 8, 8, 9]
+
+    # 5. Créer le tableau final trié
+    final_arr = [0] * len(data)
+
+    # 6. Remplir le tableau final en partant de la fin (pour stabilité)
+    for i in reversed(range(len(data))):
+        count[data[i]] -= 1
+        final_arr[count[data[i]]] = data[i]
+
+    return final_arr
 
