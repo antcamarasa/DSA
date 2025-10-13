@@ -12,6 +12,7 @@
   - [Quick Sort](#quick-sort)
   - [Tim Sort](#tim-sort)
 - [Linear Sorting](#linear-sorting)
+  -[Bitonic Sort](#bitonic-sort) 
   -[Count Sort](#count-sort)
   -[Radix Sort](#radix-sort)
   -[Bucket Sort](#bucket-sort) 
@@ -529,6 +530,7 @@ Ces copies vont être passé a notre fonction merge et le retour de cette foncti
     return arr
   
 ---
+
 ### 🌀 Shell Sort
 #### 🔹 Présentation
 
@@ -774,3 +776,133 @@ Interprétation :
 
     return final_arr
 
+
+---
+
+### ⚙️ Bitonic Sort
+#### 🔹 Introduction
+
+Avant tout, il faut comprendre ce qu’est une séquence bitonique.
+Une séquence bitonique est une suite de nombres qui monte puis descend (ou l’inverse).
+
+        # Partie croissante  |  Partie décroissante
+                [1, 2, 3, 4, 5, 9, 8, 7, 6]
+
+L’idée du bitonic sort est donc de :
+- Transformer une liste non triée en une séquence bitonique (une moitié ↑, une moitié ↓).
+- Puis d’appliquer un bitonic merge, qui, à chaque niveau, sépare les plus petits à gauche et les plus grands à droite, jusqu’à ce que la liste soit totalement triée.
+
+#### 🔹 Qu’est-ce que le bitonic merge ?
+Le bitonic merge est la fonction clé qui réalise le tri effectif.
+
+Elle parcourt le tableau, compare chaque élément avec celui situé à une distance gap = n/2, et échange les valeurs si nécessaire selon la direction voulue (croissant ou décroissant).
+
+Puis elle répète l’opération récursivement avec gap // 2, jusqu’à ce que gap == 0.
+  
+      bitonic_merge([1, 5, 6, 3], croissant)
+
+      gap = len(arr) // 2 = 2
+
+      Comparaisons :
+      1 < 6 → ok
+      5 < 3 → non → swap → [1, 3, 5, 6]
+
+      gap = 1
+      1 < 3 → ok
+      3 < 5 → ok
+      5 < 6 → ok
+
+      Résultat final : [1, 3, 5, 6]
+
+En mode décroissant, la logique est la même, mais on place simplement les plus grands à gauche.
+
+
+#### 🔹 Déroulement de l’algorithme
+
+Prenons l’exemple suivant :
+
+      arr = [4, 7, 2, 8, 1, 5, 3, 6]
+
+1️⃣ On appelle bitonic_sort(arr, ↑)
+- Cette fonction n’effectue aucun tri direct :
+   - son rôle est d’orchestrer la construction et de déléguer le vrai tri au bitonic merge.
+
+2️⃣ Elle divise le tableau en deux moitiés :
+- La gauche sera construite en croissant (↑)
+- La droite sera construite en décroissant (↓)
+
+3️⃣ Chacune de ces moitiés est elle-même traitée récursivement de la même manière :
+- Chaque appel de bitonic_sort crée une structure bitonique locale.
+- Une fois cette forme obtenue, elle est transmise à bitonic_merge, avec la direction du parent (↑ ou ↓).
+
+#### 🔹 En résumé
+On a donc deux fonctions récursives qui travaillent main dans la main :
+
+| Fonction            | Rôle                                                                                                                                                            |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **bitonic_sort()**  | *Chef d’orchestre* : découpe la liste, fixe la direction (↑ ou ↓) et combine les résultats pour créer une séquence bitonique complète.                          |
+| **bitonic_merge()** | *Ouvrier du tri* : effectue les comparaisons et les échanges selon la direction, en réduisant le `gap` jusqu’à ce que la sous-liste soit correctement ordonnée. |
+
+
+Ainsi, l’algorithme progresse niveau par niveau :
+- Chaque bitonic_sort() forme une séquence partiellement ordonnée (bitonique).
+- Chaque bitonic_merge() trie réellement cette séquence.
+- Le tout se répète récursivement jusqu’à obtenir une liste totalement triée.
+
+
+bitonic_sort([4,7,2,8,1,5,3,6], ↑)
+│
+├─ bitonic_sort([4,7,2,8], ↑)
+│   ├─ bitonic_sort([4,7], ↑)
+│   ├─ bitonic_sort([2,8], ↓)
+│   └─ bitonic_merge([4,7,8,2], ↑)
+│
+├─ bitonic_sort([1,5,3,6], ↓)
+│   ├─ bitonic_sort([1,5], ↑)
+│   ├─ bitonic_sort([3,6], ↓)
+│   └─ bitonic_merge([1,5,6,3], ↓)
+│
+└─ bitonic_merge([2,4,7,8,6,5,3,1], ↑) → [1,2,3,4,5,6,7,8]
+
+🧩 Points essentiels à retenir
+- bitonic_sort ne trie rien directement : il construit la forme bitonique et oriente les merges.
+- bitonic_merge fait tout le travail de tri, basé sur des comparaisons espacées (gap).
+- À chaque niveau, la structure devient plus “ordonnée” jusqu’à former la liste finale triée.
+- L’algorithme est parfaitement adapté au parallélisme (comparaisons indépendantes).
+- Il fonctionne que sur des tailles puissances de 2.
+
+
+#### 🔹 Implementation 
+
+    def bitonic_merge_sequence(arr, gap, direction):
+        # on compare a distance donc gap  = n/2
+        if gap == 0:
+            return arr
+
+        for i in range(0, gap):
+            if (direction == True and arr[i] > arr[i+gap]) or (direction == False and arr[i] < arr[i+gap]):
+                arr[i], arr[i+gap] = arr[i+gap], arr[i]
+
+        left = arr[:gap]
+        right = arr[gap:]
+
+        left_result = bitonic_merge_sequence(left, gap // 2, direction)
+        right_result = bitonic_merge_sequence(right, gap // 2, direction)
+
+        return left_result + right_result
+
+    def bitonic_sequence(arr, direction):
+      if len(arr) <= 1:
+          return arr
+
+      middle = len(arr) // 2
+
+      left_result = bitonic_sequence(arr[:middle], True)
+      right_result = bitonic_sequence(arr[middle:], False)
+
+      # Appeler bitonic merge_sequence sur combined = left_result + right_result
+      combined = left_result + right_result
+      result = bitonic_merge_sequence(combined, middle, direction)
+
+      # retourner le resultat de bitonic merge
+      return result
