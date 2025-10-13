@@ -776,10 +776,9 @@ Interprétation :
 
     return final_arr
 
+----
 
----
-
-### ⚙️ Bitonic Sort
+## ⚙️ Bitonic Sort
 #### 🔹 Introduction
 
 Avant tout, il faut comprendre ce qu’est une séquence bitonique.
@@ -850,19 +849,19 @@ Ainsi, l’algorithme progresse niveau par niveau :
 - Le tout se répète récursivement jusqu’à obtenir une liste totalement triée.
 
 
-bitonic_sort([4,7,2,8,1,5,3,6], ↑)
-│
-├─ bitonic_sort([4,7,2,8], ↑)
-│   ├─ bitonic_sort([4,7], ↑)
-│   ├─ bitonic_sort([2,8], ↓)
-│   └─ bitonic_merge([4,7,8,2], ↑)
-│
-├─ bitonic_sort([1,5,3,6], ↓)
-│   ├─ bitonic_sort([1,5], ↑)
-│   ├─ bitonic_sort([3,6], ↓)
-│   └─ bitonic_merge([1,5,6,3], ↓)
-│
-└─ bitonic_merge([2,4,7,8,6,5,3,1], ↑) → [1,2,3,4,5,6,7,8]
+      bitonic_sort([4,7,2,8,1,5,3,6], ↑)
+      │
+      ├─ bitonic_sort([4,7,2,8], ↑)
+      │   ├─ bitonic_sort([4,7], ↑)
+      │   ├─ bitonic_sort([2,8], ↓)
+      │   └─ bitonic_merge([4,7,8,2], ↑)
+      │
+      ├─ bitonic_sort([1,5,3,6], ↓)
+      │   ├─ bitonic_sort([1,5], ↑)
+      │   ├─ bitonic_sort([3,6], ↓)
+      │   └─ bitonic_merge([1,5,6,3], ↓)
+      │
+      └─ bitonic_merge([2,4,7,8,6,5,3,1], ↑) → [1,2,3,4,5,6,7,8]
 
 🧩 Points essentiels à retenir
 - bitonic_sort ne trie rien directement : il construit la forme bitonique et oriente les merges.
